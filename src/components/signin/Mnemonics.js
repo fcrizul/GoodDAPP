@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { get } from 'lodash'
 import bip39 from 'bip39-light'
+import RNRestart from 'react-native-restart'
 import AsyncStorage from '../../lib/utils/asyncStorage'
 import { IS_LOGGED_IN } from '../../lib/constants/localStorage'
 import logger from '../../lib/logger/pino-logger'
@@ -109,7 +110,7 @@ const Mnemonics = ({ screenProps, navigation, styles }) => {
           image: <SuccessAnimation height={modalHeight} />,
           buttons: [{ text: 'Yay!' }],
           message: `Hi ${firstName},\nyour wallet was recovered successfully`,
-          onDismiss: () => (window.location = incomingRedirectUrl),
+          onDismiss: () => (Platform.OS === 'web' ? (window.location = incomingRedirectUrl) : RNRestart.Restart()),
         })
         fireEvent(RECOVER_SUCCESS)
 
