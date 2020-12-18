@@ -22,11 +22,11 @@ import CustomButton from '../common/buttons/CustomButton'
 import InputText from '../common/form/InputText'
 import { CLICK_BTN_RECOVER_WALLET, fireEvent, RECOVER_FAILED, RECOVER_SUCCESS } from '../../lib/analytics/analytics'
 import Wrapper from '../common/layout/Wrapper'
+import normalize from '../../lib/utils/normalizeText'
 
 const TITLE = 'Recover'
 const log = logger.child({ from: TITLE })
 const MAX_WORDS = 12
-const modalHeight = Platform.select({ default: 300, web: 'auto' })
 
 const Mnemonics = ({ screenProps, navigation, styles }) => {
   //lazy load heavy wallet stuff for fast initial app load (part of initial routes)
@@ -107,7 +107,24 @@ const Mnemonics = ({ screenProps, navigation, styles }) => {
         const firstName = getFirstWord(fullName)
         showDialog({
           visible: true,
-          image: <SuccessAnimation height={modalHeight} />,
+          children: (
+            <Text
+              fontFamily="slab"
+              fontSize={34}
+              fontWeight="bold"
+              style={{
+                marginBottom: 0,
+                paddingTop: normalize(32),
+                minHeight: normalize(24),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              Welcome back!
+            </Text>
+          ),
+          image: <SuccessAnimation />,
           buttons: [{ text: 'Yay!' }],
           message: `Hi ${firstName},\nyour wallet was recovered successfully`,
           onDismiss: () => (Platform.OS === 'web' ? (window.location = incomingRedirectUrl) : RNRestart.Restart()),
