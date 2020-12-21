@@ -33,6 +33,7 @@ import { fireEvent, identifyOnUserSignup, identifyWith } from '../../lib/analyti
 import { parsePaymentLinkParams } from '../../lib/share'
 import { userExists } from '../../lib/login/userExists'
 import { useAlreadySignedUp } from '../auth/torus/AuthTorus'
+import restart from '../../lib/utils/restart'
 import type { SMSRecord } from './SmsForm'
 import SignupCompleted from './SignupCompleted'
 import EmailConfirmation from './EmailConfirmation'
@@ -258,7 +259,7 @@ const Signup = ({ navigation }: { navigation: any, screenProps: any }) => {
     }
 
     // eslint-disable-next-line no-restricted-globals
-    showErrorDialog('Wallet could not be loaded. Please refresh.', '', { onDismiss: () => location.reload(true) })
+    showErrorDialog('Wallet could not be loaded. Please refresh.', '', { onDismiss: () => restart() })
   }, [unrecoverableError])
 
   // listening to the email changes in the state

@@ -18,6 +18,7 @@ import InputText from '../common/form/InputText'
 import NavBar from '../appNavigation/NavBar'
 import IOSWebAppSignInSVG from '../../assets/IOSWebAppSignIn.svg'
 import { getDesignRelativeHeight } from '../../lib/utils/sizes'
+import restart from '../../lib/utils/restart'
 
 const TITLE = 'EASY ACCESS'
 const log = logger.child({ from: 'IOS EASY ACCESS' })
@@ -64,7 +65,7 @@ const IOSWebAppSignIn = ({ screenProps, navigation, styles }) => {
         await saveMnemonics(mnemonic)
         await AsyncStorage.setItem(IS_LOGGED_IN, 'true')
 
-        window.location = '/'
+        restart()
       } else {
         log.error('Failed to sign-in', errorText, new Error(errorText), {
           code,
