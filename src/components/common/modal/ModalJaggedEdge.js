@@ -1,10 +1,29 @@
 // @flow
-import React from 'react'
+import React, { useRef } from 'react'
 import { Platform, View } from 'react-native'
 import { withStyles } from '../../../lib/styles'
+import TearLines from '../view/TearLines'
 import { mediumZIndex } from './styles'
 
-const ModalJaggedEdge = ({ styles, style }: any) => <View style={[styles.jaggedEdge, style]} />
+const ModalJaggedEdge = ({ styles, style }: any) => {
+  const tearLines = useRef(null)
+
+  if (Platform.OS === 'web') {
+    return <View style={[styles.jaggedEdge, style]} />
+  }
+  return (
+    <View
+      style={[styles.jaggedEdge, style]}
+      onLayout={e => {
+        if (tearLines && tearLines.current) {
+          tearLines.current.onLayout(e)
+        }
+      }}
+    >
+      <TearLines isUnder ref={tearLines} color="#FFFFFF" style={{ zIndex: mediumZIndex }} />
+    </View>
+  )
+}
 
 const getStylesFromProps = ({ theme }) => ({
   jaggedEdge: {
@@ -16,6 +35,9 @@ const getStylesFromProps = ({ theme }) => ({
         backgroundPosition: `-${theme.modals.jaggedEdgeSize / 2}px 0`,
         backgroundRepeat: 'repeat-x',
         backgroundSize: `${theme.modals.jaggedEdgeSize}px ${theme.modals.jaggedEdgeSize}px`,
+      },
+      default: {
+        elevation: 24,
       },
     }),
     height: theme.modals.jaggedEdgeSize,
